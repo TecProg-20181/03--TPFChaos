@@ -1,5 +1,4 @@
 import random
-import string
 
 WORDLIST_FILENAME = "palavras.txt"
 
@@ -52,6 +51,74 @@ def getAvailableLetters():
 
     return available
 
+def hanging(guesses):
+    return {
+        7: """ 
+                    |      
+                    |             
+                    |             
+                    |             
+                    |             """,
+        
+        6 :"""
+                    ________      
+                    |      |      
+                    |             
+                    |             
+                    |             
+                    |             """,
+        
+        5 : """
+                    ________ 
+                    |      |      
+                    |      0      
+                    |             
+                    |             
+                    |             """,
+        
+        4 : """
+                    ________      
+                    |      |      
+                    |      0      
+                    |     /       
+                    |             
+                    |             """,
+        
+        3 : """
+                    ________  
+                    |      |      
+                    |      0      
+                    |     /|      
+                    |             
+                    |             """,
+        
+        2: """
+                    ________      
+                    |      |      
+                    |      0      
+                    |     /|\     
+                    |             
+                    |             """,
+        
+        1 : """
+                    ________      
+                    |      |      
+                    |      0      
+                    |     /|\     
+                    |     /       
+                    |             """,
+        
+        0 : """
+                    ________      
+                    |      |      
+                    |      0      
+                    |     /|\     
+                    |     / \     
+                    |             
+                        GAME OVER!"""
+
+    }[guesses]
+
 def hangman(secretWord):
 
     guesses = 8
@@ -92,6 +159,7 @@ def hangman(secretWord):
             print ('Good Guess: ', guessed)
         else:
             guesses -=1
+            print(hanging(guesses))
             lettersGuessed.append(letter)
 
             guessed = getGuessedWord()
