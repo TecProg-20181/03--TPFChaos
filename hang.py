@@ -1,4 +1,5 @@
 import random
+import re
 
 WORDLIST_FILENAME = "palavras.txt"
 
@@ -14,19 +15,13 @@ def loadWords():
     line = inFile.readline()
     # wordlist: list of strings
     wordlist = line.split(' ')
-    print(wordlist)
     print ("  ", len(wordlist), "words loaded.")
     return random.choice(wordlist)
 
 
 def isWordGuessed(secretWord, lettersGuessed):
-    secretLetters = []
 
-#    for letter in secretWord:
-#        if letter in secretLetters:
-#            secretLetters.append(letter)
-#        else:
-#            pass
+    secretLetters = []
 
     for letter in secretWord:
         if letter in lettersGuessed:
@@ -119,12 +114,19 @@ def hanging(guesses):
 
     }[guesses]
 
-def hangman(secretWord):
+def diffCharacters(secretWord):
+    diff = ''.join(set(secretWord))
+    length = len(diff)
+    return length
 
+def hangman(secretWord,length):
+
+    
     guesses = 8
     lettersGuessed = []
     print ('Welcome to the game, Hangam!')
     print ('I am thinking of a word that is', len(secretWord), ' letters long.')
+    print ('This word has',length,'different characters.' )
     print ('-------------')
 
     while  isWordGuessed(secretWord, lettersGuessed) == False and guesses >0:
@@ -178,10 +180,12 @@ def hangman(secretWord):
         else:
             print ('Sorry, you ran out of guesses. The word was ', secretWord, '.')
 
+length = 9
+secretWord = ''
+while length > 8:
+    secretWord = loadWords().lower()
+    length = diffCharacters(secretWord)
 
-
-
-secretWord = loadWords().lower()
-hangman(secretWord)
+hangman(secretWord,length)
 
 ###The code was adapted from python to python3
