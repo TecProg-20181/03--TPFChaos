@@ -1,19 +1,12 @@
 import random
-import re
+import string
 
 WORDLIST_FILENAME = "palavras.txt"
 
 def loadWords():
-    """
-    Depending on the size of the word list, this function may
-    take a while to finish.
-    """
     print ("Loading word list from file...")
-    # inFile: file
     inFile = open(WORDLIST_FILENAME, 'r')
-    # line: string
     line = inFile.readline()
-    # wordlist: list of strings
     wordlist = line.split(' ')
     print ("  ", len(wordlist), "words loaded.")
     return random.choice(wordlist)
@@ -31,20 +24,6 @@ def isWordGuessed(secretWord, lettersGuessed):
 
     return True
 
-def getGuessedWord():
-
-     guessed = ''
-
-
-     return guessed
-
-def getAvailableLetters():
-    import string
-    # 'abcdefghijklmnopqrstuvwxyz'
-    available = string.ascii_lowercase
-
-
-    return available
 
 def hanging(guesses):
     return {
@@ -120,8 +99,7 @@ def diffCharacters(secretWord):
     return length
 
 def hangman(secretWord,length):
-
-    
+ 
     guesses = 8
     lettersGuessed = []
     print ('Welcome to the game, Hangam!')
@@ -131,7 +109,7 @@ def hangman(secretWord,length):
 
     while  isWordGuessed(secretWord, lettersGuessed) == False and guesses >0:
         print ('You have ', guesses, 'guesses left.')
-        available = getAvailableLetters()
+        available = string.ascii_lowercase
         for letter in available:
             if letter in lettersGuessed:
                 available = available.replace(letter, '')
@@ -140,7 +118,7 @@ def hangman(secretWord,length):
         letter = input('Please guess a letter: ')
         if letter in lettersGuessed:
 
-            guessed = getGuessedWord()
+            guessed = ''
             for letter in secretWord:
                 if letter in lettersGuessed:
                     guessed += letter
@@ -151,7 +129,7 @@ def hangman(secretWord,length):
         elif letter in secretWord:
             lettersGuessed.append(letter)
 
-            guessed = getGuessedWord()
+            guessed = ''
             for letter in secretWord:
                 if letter in lettersGuessed:
                     guessed += letter
@@ -164,7 +142,7 @@ def hangman(secretWord,length):
             print(hanging(guesses))
             lettersGuessed.append(letter)
 
-            guessed = getGuessedWord()
+            guessed = ''
             for letter in secretWord:
                 if letter in lettersGuessed:
                     guessed += letter
