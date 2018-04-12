@@ -3,167 +3,186 @@ import string
 
 WORDLIST_FILENAME = "palavras.txt"
 
-def loadWords():
-    print ("Loading word list from file...")
-    inFile = open(WORDLIST_FILENAME, 'r')
-    line = inFile.readline()
-    wordlist = line.split(' ')
-    print ("  ", len(wordlist), "words loaded.")
-    return random.choice(wordlist)
+class Word():
+
+    def __init__(self):
+        self.secretWord = self.loadWords().lower()
+        self.inFile = ''
+        self.line = ''
+        self.wordlist = ''
+        self.length = 9
+
+    def loadWords(self):
+        print ("Loading word list from file...")
+        self.inFile = open(WORDLIST_FILENAME, 'r')
+        self.line = self.inFile.readline()
+        self.wordlist = self.line.split(' ')
+        print ("  ", len(self.wordlist), "words loaded.")
+        return random.choice(self.wordlist)
+
+    def diffCharacters(self):
+        while self.length > 8:
+            diff = ''.join(set(self.secretWord))
+            self.length = len(diff)
+        return self.length
+
+class GameMechanics():
+    def __init__(self):
+        self.guesses = 8
+        self.secretWord = ''
+
+    def isWordGuessed(self):
+
+        for letter in self.secretWord:
+            if letter in self.lettersGuessed:
+                pass
+            else:
+                return False
+
+        return True
 
 
-def isWordGuessed(secretWord, lettersGuessed):
+    def hanging(self,guesses):
+        return {
+            7: """
+                        |
+                        |
+                        |
+                        |
+                        |             """,
 
-    secretLetters = []
+            6 :"""
+                        ________
+                        |      |
+                        |
+                        |
+                        |
+                        |             """,
 
-    for letter in secretWord:
-        if letter in lettersGuessed:
-            pass
+            5 : """
+                        ________
+                        |      |
+                        |      0
+                        |
+                        |
+                        |             """,
+
+            4 : """
+                        ________
+                        |      |
+                        |      0
+                        |     /
+                        |
+                        |             """,
+
+            3 : """
+                        ________
+                        |      |
+                        |      0
+                        |     /|
+                        |
+                        |             """,
+
+            2: """
+                        ________
+                        |      |
+                        |      0
+                        |     /|\
+                        |
+                        |             """,
+
+            1 : """
+                        ________
+                        |      |
+                        |      0
+                        |     /|\
+                        |     /
+                        |             """,
+
+            0 : """
+                        ________
+                        |      |
+                        |      0
+                        |     /|\
+                        |     / \
+                        |
+                            GAME OVER!"""
+
+        }[self.guesses]
+
+    def letterGuessing(self):
+        self.guessed = ''
+        for letter in self.secretWord:
+            if letter in self.lettersGuessed:
+                self.guessed += letter
+            else:
+                self.guessed += '_ '
+            return self.guessed
+
+    def hangman(self,secretWord,length):
+
+        self.guesses = 1
+        self.secretWord = secretWord
+        self.lettersGuessed = []
+        print ('Welcome to the game, Hangam!')
+        print ('I am thinking of a word that is', len(self.secretWord), ' letters long.')
+        print ('This word has',length,'different characters.' )
+        print ('-------------')
+
+        while  self.isWordGuessed() == False and self.guesses >0:
+            print ('You have ', self.guesses, 'guesses left.')
+            self.available = string.ascii_lowercase
+            for letter in self.available:
+                if letter in self.lettersGuessed:
+                    self.available = self.available.replace(letter, '')
+
+            print ('Available letters:', self.available)
+            letter = input('Please guess a letter: ')
+            if letter in self.lettersGuessed:
+
+                self.guessed = ''
+                for letter in self.secretWord:
+                    if letter in self.lettersGuessed:
+                        self.guessed += letter
+                    else:
+                        self.guessed += '_'
+
+                print ('Oops! You have already guessed that letter: ', self.guessed)
+            elif letter in self.secretWord:
+                self.lettersGuessed.append(letter)
+                self.guessed = ''
+                for letter in self.secretWord:
+                    if letter in self.lettersGuessed:
+                        self.guessed += letter
+                    else:
+                        self.guessed += '_'
+
+                print ('Good Guess: ', self.guessed)
+            else:
+
+                self.guesses -= 1
+                #self.length = Word.diffCharacters(self.secretWord)
+                #print(self.hanging(self.guesses))
+                self.lettersGuessed.append(letter)
+
+                self.guessed = self.letterGuessing()
+                print(self.guesses)
+
+                print ('Ops! That letter is not in my word: ',  self.guessed)
+            print ('------------')
+
         else:
-            return False
+            if self.isWordGuessed() == True:
+                print ('Congratulations, you won!')
+            else:
+                print ('Sorry, you ran out of guesses. The word was ', self.secretWord, '.')
 
-    return True
+word = Word()
+mech = GameMechanics()
 
+secretWord = word.loadWords()
+length = word.diffCharacters()
 
-def hanging(guesses):
-    return {
-        7: """ 
-                    |      
-                    |             
-                    |             
-                    |             
-                    |             """,
-        
-        6 :"""
-                    ________      
-                    |      |      
-                    |             
-                    |             
-                    |             
-                    |             """,
-        
-        5 : """
-                    ________ 
-                    |      |      
-                    |      0      
-                    |             
-                    |             
-                    |             """,
-        
-        4 : """
-                    ________      
-                    |      |      
-                    |      0      
-                    |     /       
-                    |             
-                    |             """,
-        
-        3 : """
-                    ________  
-                    |      |      
-                    |      0      
-                    |     /|      
-                    |             
-                    |             """,
-        
-        2: """
-                    ________      
-                    |      |      
-                    |      0      
-                    |     /|\     
-                    |             
-                    |             """,
-        
-        1 : """
-                    ________      
-                    |      |      
-                    |      0      
-                    |     /|\     
-                    |     /       
-                    |             """,
-        
-        0 : """
-                    ________      
-                    |      |      
-                    |      0      
-                    |     /|\     
-                    |     / \     
-                    |             
-                        GAME OVER!"""
+mech.hangman(secretWord,length)
 
-    }[guesses]
-
-def diffCharacters(secretWord):
-    diff = ''.join(set(secretWord))
-    length = len(diff)
-    return length
-
-def hangman(secretWord,length):
- 
-    guesses = 8
-    lettersGuessed = []
-    print ('Welcome to the game, Hangam!')
-    print ('I am thinking of a word that is', len(secretWord), ' letters long.')
-    print ('This word has',length,'different characters.' )
-    print ('-------------')
-
-    while  isWordGuessed(secretWord, lettersGuessed) == False and guesses >0:
-        print ('You have ', guesses, 'guesses left.')
-        available = string.ascii_lowercase
-        for letter in available:
-            if letter in lettersGuessed:
-                available = available.replace(letter, '')
-
-        print ('Available letters', available)
-        letter = input('Please guess a letter: ')
-        if letter in lettersGuessed:
-
-            guessed = ''
-            for letter in secretWord:
-                if letter in lettersGuessed:
-                    guessed += letter
-                else:
-                    guessed += '_ '
-
-            print ('Oops! You have already guessed that letter: ', guessed)
-        elif letter in secretWord:
-            lettersGuessed.append(letter)
-
-            guessed = ''
-            for letter in secretWord:
-                if letter in lettersGuessed:
-                    guessed += letter
-                else:
-                    guessed += '_ '
-
-            print ('Good Guess: ', guessed)
-        else:
-            guesses -=1
-            print(hanging(guesses))
-            lettersGuessed.append(letter)
-
-            guessed = ''
-            for letter in secretWord:
-                if letter in lettersGuessed:
-                    guessed += letter
-                else:
-                    guessed += '_ '
-
-            print ('Oops! That letter is not in my word: ',  guessed)
-        print ('------------')
-
-    else:
-        if isWordGuessed(secretWord, lettersGuessed) == True:
-            print ('Congratulations, you won!')
-        else:
-            print ('Sorry, you ran out of guesses. The word was ', secretWord, '.')
-
-length = 9
-secretWord = ''
-while length > 8:
-    secretWord = loadWords().lower()
-    length = diffCharacters(secretWord)
-
-hangman(secretWord,length)
-
-###The code was adapted from python to python3
+###The code was adapted from python2 to python3

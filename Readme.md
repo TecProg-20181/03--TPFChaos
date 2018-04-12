@@ -21,6 +21,6 @@ Rodar o projeto
 Para executar o projeto, use o comando:
 
 ```
-python hang.py
+python3 hang.py
 ```
 
