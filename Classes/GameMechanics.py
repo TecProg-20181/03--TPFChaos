@@ -90,8 +90,8 @@ class GameMechanics():
             if letter in self.lettersGuessed:
                 self.guessed += letter
             else:
-                self.guessed += '_ '
-            return self.guessed
+                self.guessed += '_'
+        return self.guessed
 
     def hangman(self,secretWord,length):
 
@@ -114,22 +114,12 @@ class GameMechanics():
             letter = input('Please guess a letter: ')
             if letter in self.lettersGuessed:
 
-                self.guessed = ''
-                for letter in self.secretWord:
-                    if letter in self.lettersGuessed:
-                        self.guessed += letter
-                    else:
-                        self.guessed += '_'
+                self.guessed = self.letterGuessing()
 
                 print ('Oops! You have already guessed that letter: ', self.guessed)
             elif letter in self.secretWord:
                 self.lettersGuessed.append(letter)
-                self.guessed = ''
-                for letter in self.secretWord:
-                    if letter in self.lettersGuessed:
-                        self.guessed += letter
-                    else:
-                        self.guessed += '_'
+                self.guessed = self.letterGuessing()
 
                 print ('Good Guess: ', self.guessed)
             else:
