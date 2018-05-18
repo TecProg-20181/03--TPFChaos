@@ -111,7 +111,18 @@ class GameMechanics():
                     self.available = self.available.replace(letter, '')
 
             print ('Available letters:', self.available)
-            letter = input('Please guess a letter: ')
+            
+            while True:
+                letter = input('Please guess a letter: ')
+                if letter.isalpha()==False:
+                    print('Your guess was not a letter, please try again, using a letter!')
+                    print('Please, try again, correctly this time.')
+                elif len(letter)!=1:
+                    print('Your guess input must contain one alphabetic digit only, no more or no less.')
+                    print('Please, try again, correctly this time.')
+                else:
+                    break
+
             if letter in self.lettersGuessed:
 
                 self.guessed = self.letterGuessing()
@@ -125,7 +136,6 @@ class GameMechanics():
             else:
 
                 self.guesses -= 1
-                #self.length = Word.diffCharacters(self.secretWord)
                 print(self.hanging(self.guesses))
                 self.lettersGuessed.append(letter)
 
