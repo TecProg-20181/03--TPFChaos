@@ -5,9 +5,6 @@ from Classes.GameMechanics import GameMechanics
 word = Word()
 mech = GameMechanics()
 
-#secretWord = word.loadWords()
-#length = word.diffCharacters()
-
 while True:
     secretWord = word.loadWords()
     length = word.diffCharacters()
@@ -16,4 +13,3 @@ while True:
 
 mech.hangman(secretWord,length)
 
-###The code was adapted from python2 to python3

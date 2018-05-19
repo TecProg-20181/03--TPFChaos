@@ -113,6 +113,10 @@ class GameMechanics():
             print ('Available letters:', self.available)
             
             while True:
+                if(self.guesses==1):
+                    print ('----------------------')
+                    print('THIS IS YOUR LAST GUESS')
+                    print ('----------------------')
                 letter = input('Please guess a letter: ')
                 if letter.isalpha()==False:
                     print('Your guess was not a letter, please try again, using a letter!')
@@ -145,7 +149,7 @@ class GameMechanics():
                 print ('Ops! That letter is not in my word: ',  self.guessed)
             print ('------------')
 
-        else:
+        else:            
             if self.isWordGuessed() == True:
                 print ('Congratulations, you won!')
             else:
