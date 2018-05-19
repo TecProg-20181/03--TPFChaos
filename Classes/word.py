@@ -17,29 +17,25 @@ class Word():
 
     def loadWords(self):
         print ("Loading word list from file...")
-        self.inFile = open(WORDLIST_FILENAME, 'r')
         try:
+            self.inFile = open(WORDLIST_FILENAME, 'r')
             if os.stat(WORDLIST_FILENAME).st_size > 0:
                print ("All good")
             else:
                print ("The file is Empty! The game will be ended due to no words being available")
-               sys.exit()
+               sys.exit()                       
         except OSError:
-            print ("No file")
-        try:
-            if WORDLIST_FILENAME.isalpha() == True:
-               print ("All good")
-            else:
-               print ("The file has no words! The game will be ended due to no alphabetic characters being present")
-               sys.exit()
-        except OSError:
-            print ("No file")
-        
+            print ("No file found")
+            sys.exit()        
         self.line = self.inFile.readline()
         self.wordlist = self.line.split(' ')
-        
-        print ("  ", len(self.wordlist), "words loaded.")
-        return random.choice(self.wordlist)
+        print ("  ", len(self.wordlist), "words loaded.")                       
+        word = random.choice(self.wordlist)
+        for letter in word:
+            if letter.isalpha() == False and letter.isspace() == False:
+                print('The word contains letters, please choose an archive with nothing but letters and spaces')
+                sys.exit()
+        return word
 
     def diffCharacters(self):
         while self.length > 8:
